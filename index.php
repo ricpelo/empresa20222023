@@ -8,15 +8,27 @@
 </head>
 <body>
     <?php
-    $codigo = (isset($_GET['codigo'])) ? trim($_GET['codigo']) : null;
+    $desde_codigo = (isset($_GET['desde_codigo'])) ? trim($_GET['desde_codigo']) : null;
+    $hasta_codigo = (isset($_GET['hasta_codigo'])) ? trim($_GET['hasta_codigo']) : null;
     ?>
     <div>
         <form action="" method="get">
-            <label>
-                Código:
-                <input type="text" name="codigo" size="8" value="<?= $codigo ?>">
-            </label>
-            <button type="submit">Buscar</button>
+            <fieldset>
+                <legend>Criterios de búsqueda</legend>
+                <p>
+                    <label>
+                        Desde código:
+                        <input type="text" name="desde_codigo" size="8" value="<?= $desde_codigo ?>">
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Hasta código:
+                        <input type="text" name="hasta_codigo" size="8" value="<?= $hasta_codigo ?>">
+                    </label>
+                </p>
+                <button type="submit">Buscar</button>
+            </fieldset>
         </form>
     </div>
     <?php
@@ -25,16 +37,23 @@
     $sent = $pdo->query('LOCK TABLE departamentos IN SHARE MODE');
     $sent = $pdo->prepare('SELECT COUNT(*)
                              FROM departamentos
-                            WHERE codigo = :codigo');
-    $sent->execute([':codigo' => $codigo]);
+                            WHERE codigo BETWEEN :desde_codigo AND :hasta_codigo');
+    $sent->execute([
+        ':desde_codigo' => $desde_codigo,
+        ':hasta_codigo' => $hasta_codigo,
+    ]);
     $total = $sent->fetchColumn();
     $sent = $pdo->prepare('SELECT *
                              FROM departamentos
-                            WHERE codigo = :codigo
+                            WHERE codigo BETWEEN :desde_codigo AND :hasta_codigo
                          ORDER BY codigo');
-    $sent->execute([':codigo' => $codigo]);
+    $sent->execute([
+        ':desde_codigo' => $desde_codigo,
+        ':hasta_codigo' => $hasta_codigo,
+    ]);
     $pdo->commit();
     ?>
+    <br>
     <div>
         <table style="margin: auto" border="1">
             <thead>
