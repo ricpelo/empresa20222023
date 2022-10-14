@@ -70,12 +70,14 @@
             <thead>
                 <th>Código</th>
                 <th>Denominación</th>
+                <th>Acciones</th>
             </thead>
             <tbody>
                 <?php foreach ($sent as $fila): ?>
                     <tr>
                         <td><?= $fila['codigo'] ?></td>
                         <td><?= $fila['denominacion'] ?></td>
+                        <td><a href="confirmar_borrado.php?id=<?= $fila['id'] ?>">Borrar</a></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
