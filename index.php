@@ -8,8 +8,9 @@
 </head>
 <body>
     <?php
-    $desde_codigo = (isset($_GET['desde_codigo'])) ? trim($_GET['desde_codigo']) : null;
-    $hasta_codigo = (isset($_GET['hasta_codigo'])) ? trim($_GET['hasta_codigo']) : null;
+    $desde_codigo = isset($_GET['desde_codigo']) ? trim($_GET['desde_codigo']) : null;
+    $hasta_codigo = isset($_GET['hasta_codigo']) ? trim($_GET['hasta_codigo']) : null;
+    $denominacion = isset($_GET['denominacion']) ? trim($_GET['denominacion']) : null;
     ?>
     <div>
         <form action="" method="get">
@@ -27,6 +28,12 @@
                         <input type="text" name="hasta_codigo" size="8" value="<?= $hasta_codigo ?>">
                     </label>
                 </p>
+                <p>
+                    <label>
+                        Denominación:
+                        <input type="text" name="denominacion" value="<?= $denominacion ?>">
+                    </label>
+                </p>
                 <button type="submit">Buscar</button>
             </fieldset>
         </form>
@@ -34,23 +41,27 @@
     <?php
     $pdo = new PDO('pgsql:host=localhost;dbname=empresa', 'empresa', 'empresa');
     $pdo->beginTransaction();
-    $sent = $pdo->query('LOCK TABLE departamentos IN SHARE MODE');
-    $sent = $pdo->prepare('SELECT COUNT(*)
-                             FROM departamentos
-                            WHERE codigo BETWEEN :desde_codigo AND :hasta_codigo');
-    $sent->execute([
-        ':desde_codigo' => $desde_codigo,
-        ':hasta_codigo' => $hasta_codigo,
-    ]);
+    $pdo->exec('LOCK TABLE departamentos IN SHARE MODE');
+    $where = [];
+    $execute = [];
+    if (isset($desde_codigo) && $desde_codigo != '') {
+        $where[] = 'codigo >= :desde_codigo';
+        $execute[':desde_codigo'] = $desde_codigo;
+    }
+    if (isset($hasta_codigo) && $hasta_codigo != '') {
+        $where[] = 'codigo <= :hasta_codigo';
+        $execute[':hasta_codigo'] = $hasta_codigo;
+    }
+    if (isset($denominacion) && $denominacion != '') {
+        $where[] = 'lower(denominacion) LIKE lower(:denominacion)';
+        $execute[':denominacion'] = "%$denominacion%";
+    }
+    $where = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
+    $sent = $pdo->prepare("SELECT COUNT(*) FROM departamentos $where");
+    $sent->execute($execute);
     $total = $sent->fetchColumn();
-    $sent = $pdo->prepare('SELECT *
-                             FROM departamentos
-                            WHERE codigo BETWEEN :desde_codigo AND :hasta_codigo
-                         ORDER BY codigo');
-    $sent->execute([
-        ':desde_codigo' => $desde_codigo,
-        ':hasta_codigo' => $hasta_codigo,
-    ]);
+    $sent = $pdo->prepare("SELECT * FROM departamentos $where ORDER BY codigo");
+    $sent->execute($execute);
     $pdo->commit();
     ?>
     <br>
