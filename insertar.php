@@ -12,6 +12,18 @@
 
     $codigo = obtener_post('codigo');
     $denominacion = obtener_post('denominacion');
+
+    if (isset($codigo, $denominacion)) {
+        $pdo = conectar();
+        $sent = $pdo->prepare("INSERT
+                                 INTO departamentos (codigo, denominacion)
+                               VALUES (:codigo, :denominacion)");
+        $sent->execute([
+            ':codigo' => $codigo,
+            ':denominacion' => $denominacion,
+        ]);
+        return volver();
+    }
     ?>
     <div>
         <form action="" method="post">
