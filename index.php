@@ -8,9 +8,11 @@
 </head>
 <body>
     <?php
-    $desde_codigo = isset($_GET['desde_codigo']) ? trim($_GET['desde_codigo']) : null;
-    $hasta_codigo = isset($_GET['hasta_codigo']) ? trim($_GET['hasta_codigo']) : null;
-    $denominacion = isset($_GET['denominacion']) ? trim($_GET['denominacion']) : null;
+    require 'auxiliar.php';
+
+    $desde_codigo = obtener_get('desde_codigo');
+    $hasta_codigo = obtener_get('hasta_codigo');
+    $denominacion = obtener_get('denominacion');
     ?>
     <div>
         <form action="" method="get">
@@ -39,7 +41,7 @@
         </form>
     </div>
     <?php
-    $pdo = new PDO('pgsql:host=localhost;dbname=empresa', 'empresa', 'empresa');
+    $pdo = conectar();
     $pdo->beginTransaction();
     $pdo->exec('LOCK TABLE departamentos IN SHARE MODE');
     $where = [];
@@ -83,6 +85,7 @@
             </tbody>
         </table>
         <p>Número total de filas: <?= $total ?></p>
+        <a href="insertar.php">Insertar un nuevo departamento</a>
     </div>
 </body>
 </html>

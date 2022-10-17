@@ -8,8 +8,13 @@
 </head>
 <body>
     <?php
-    $id = isset($_GET['id']) ? trim($_GET['id']) : null;
-    // Si no está, hay que hacer algo
+    require 'auxiliar.php';
+
+    $id = obtener_get('id');
+
+    if (!isset($id)) {
+        return volver();
+    }
     ?>
     <p>¿Está seguro de que desea borrar ese departamento?</p>
     <form action="borrar.php" method="post">
