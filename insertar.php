@@ -10,21 +10,18 @@
     <?php
     require 'auxiliar.php';
 
-    $codigo = obtener_post('codigo');
-    $denominacion = obtener_post('denominacion');
-
-    $error = [];
-
-    if (isset($codigo, $denominacion)) {
+    try {
+        $codigo = obtener_post('codigo');
+        $denominacion = obtener_post('denominacion');
+        $error = [];
+        comprobar_parametros($codigo, $denominacion);
         filtrar_codigo($codigo, $error);
         filtrar_denominacion($denominacion, $error);
-
-        if (!empty($error)) {
-            mostrar_errores($error);
-        } else {
-            insertar_departamento($codigo, $denominacion);
-            return volver();
-        }
+        comprobar_errores($error);
+        insertar_departamento($codigo, $denominacion);
+        return volver();
+    } catch (Exception $e) {
+        mostrar_errores($error);
     }
     ?>
     <div>

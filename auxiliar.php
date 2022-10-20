@@ -106,3 +106,17 @@ function mostrar_errores($error)
         </ul><?php
     }
 }
+
+function comprobar_parametros($codigo, $denominacion)
+{
+    if (!isset($codigo, $denominacion)) {
+        throw new Exception();
+    }
+}
+
+function comprobar_errores($error)
+{
+    if (!empty($error)) {
+        throw new Exception();
+    }
+}
