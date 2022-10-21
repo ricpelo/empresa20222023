@@ -30,53 +30,55 @@ function obtener_parametro($par, $array)
 
 function obtener_codigo(&$error)
 {
-    $codigo = filter_input(INPUT_POST, 'codigo');
-
-    if ($codigo !== null) {
-        if (filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT, [
-            'options' => [
-                'min_range' => 0,
-                'max_range' => 99,
-            ],
-        ]) === false) {
-            insertar_error(
-                'codigo',
-                'El valor del código no es correcto',
-                $error
-            );
-            return $codigo;
-        } else {
-            $pdo = conectar();
-            $sent = $pdo->prepare("SELECT COUNT(*)
-                                     FROM departamentos
-                                    WHERE codigo = :codigo");
-            $sent->execute([':codigo' => $codigo]);
-            $cuantos = $sent->fetchColumn();
-            if ($cuantos !== 0) {
-                insertar_error('codigo', 'El código ya existe', $error);
+    return filter_input(INPUT_POST, 'codigo', FILTER_CALLBACK, [
+        'options' => function ($x) use (&$error) {
+            $long = mb_strlen($x);
+            if ($long < 1 || $long > 2) {
+                insertar_error(
+                    'codigo',
+                    'La longitud del código es incorrecta',
+                    $error
+                );
             }
-        }
-    }
+            if (!ctype_digit($x)) {
+                insertar_error(
+                    'codigo',
+                    'Los caracteres del código no son válidos',
+                    $error
+                );
+            }
+            if (empty($error['codigo'])) {
+                $pdo = conectar();
+                $sent = $pdo->prepare("SELECT COUNT(*)
+                                         FROM departamentos
+                                        WHERE codigo = :codigo");
+                $sent->execute([':codigo' => $x]);
+                $cuantos = $sent->fetchColumn();
+                if ($cuantos !== 0) {
+                    insertar_error('codigo', 'El código ya existe', $error);
+                }
+            }
 
-    return $codigo;
+            return $x;
+        }
+    ]);
 }
 
 function obtener_denominacion(&$error)
 {
-    $denominacion = filter_input(INPUT_POST, 'denominacion');
-
-    if ($denominacion !== null) {
-        $long = mb_strlen($denominacion);
-        if ($long < 1 || $long > 255) {
-            insertar_error(
-                'denominacion',
-                'La longitud de la denominación es incorrecta',
-                $error
-            );
+    return filter_input(INPUT_POST, 'denominacion', FILTER_CALLBACK, [
+        'options' => function ($x) use (&$error) {
+            $long = mb_strlen($x);
+            if ($long < 1 || $long > 255) {
+                insertar_error(
+                    'denominacion',
+                    'La longitud de la denominación es incorrecta',
+                    $error
+                );
+            }
+            return $x;
         }
-    }
-
-    return $denominacion;
+    ]);
 }
 
 /*
