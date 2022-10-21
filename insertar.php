@@ -22,12 +22,9 @@
     require 'auxiliar.php';
 
     try {
-        $codigo = obtener_post('codigo');
-        $denominacion = obtener_post('denominacion');
         $error = [];
-        comprobar_parametros($codigo, $denominacion);
-        filtrar_codigo($codigo, $error);
-        filtrar_denominacion($denominacion, $error);
+        $codigo = obtener_codigo($error);
+        $denominacion = obtener_denominacion($error);
         comprobar_errores($error);
         insertar_departamento($codigo, $denominacion);
         return volver();

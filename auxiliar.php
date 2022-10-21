@@ -28,6 +28,58 @@ function obtener_parametro($par, $array)
     return isset($array[$par]) ? trim($array[$par]) : null;
 }
 
+function obtener_codigo(&$error)
+{
+    $codigo = filter_input(INPUT_POST, 'codigo');
+
+    if ($codigo !== null) {
+        if (filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_INT, [
+            'options' => [
+                'min_range' => 0,
+                'max_range' => 99,
+            ],
+        ]) === false) {
+            insertar_error(
+                'codigo',
+                'El valor del código no es correcto',
+                $error
+            );
+            return $codigo;
+        } else {
+            $pdo = conectar();
+            $sent = $pdo->prepare("SELECT COUNT(*)
+                                     FROM departamentos
+                                    WHERE codigo = :codigo");
+            $sent->execute([':codigo' => $codigo]);
+            $cuantos = $sent->fetchColumn();
+            if ($cuantos !== 0) {
+                insertar_error('codigo', 'El código ya existe', $error);
+            }
+        }
+    }
+
+    return $codigo;
+}
+
+function obtener_denominacion(&$error)
+{
+    $denominacion = filter_input(INPUT_POST, 'denominacion');
+
+    if ($denominacion !== null) {
+        $long = mb_strlen($denominacion);
+        if ($long < 1 || $long > 255) {
+            insertar_error(
+                'denominacion',
+                'La longitud de la denominación es incorrecta',
+                $error
+            );
+        }
+    }
+
+    return $denominacion;
+}
+
+/*
 function filtrar_codigo($codigo, &$error)
 {
     $long = mb_strlen($codigo);
@@ -46,13 +98,6 @@ function filtrar_codigo($codigo, &$error)
             $error
         );
     }
-
-    filter_var($codigo, FILTER_VALIDATE_INT, [
-        'options' => [
-            'min_range' => 0,
-            'max_range' => 99,
-        ]
-    ])
 
     if (!isset($error['codigo'])) {
         $pdo = conectar();
@@ -78,6 +123,7 @@ function filtrar_denominacion($denominacion, &$error)
         );
     }
 }
+*/
 
 function insertar_error($campo, $mensaje, &$error)
 {
