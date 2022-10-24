@@ -16,10 +16,6 @@
         return volver();
     }
 
-    $error = [];
-    $codigo = obtener_codigo($error);
-    $denominacion = obtener_denominacion($error);
-
     $pdo = conectar();
     $sent = $pdo->prepare("SELECT codigo, denominacion
                              FROM departamentos
@@ -31,7 +27,28 @@
         return volver();
     }
 
-    extract($fila);
+    $error = [];
+    $codigo = obtener_codigo_modificar($id, $error);
+    $denominacion = obtener_denominacion($error);
+
+    // ¿Vengo de mí mismo?
+    if (isset($codigo, $denominacion)) {
+        // ¿No hay errores?
+        if (empty($error)) {
+            $sent = $pdo->prepare("UPDATE departamentos
+                                      SET codigo = :codigo,
+                                          denominacion = :denominacion
+                                    WHERE id = :id");
+            $sent->execute([
+                ':codigo' => $codigo,
+                ':denominacion' => $denominacion,
+                ':id' => $id,
+            ]);
+            return volver();
+        }
+    } else {
+        extract($fila);
+    }
     ?>
     <div>
         <form action="" method="post">

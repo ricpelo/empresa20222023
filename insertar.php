@@ -23,7 +23,7 @@
 
     try {
         $error = [];
-        $codigo = obtener_codigo($error);
+        $codigo = obtener_codigo_insertar($error);
         $denominacion = obtener_denominacion($error);
         comprobar_errores($error);
         insertar_departamento($codigo, $denominacion);

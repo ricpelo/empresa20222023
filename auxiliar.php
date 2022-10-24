@@ -28,7 +28,7 @@ function obtener_parametro($par, $array)
     return isset($array[$par]) ? trim($array[$par]) : null;
 }
 
-function obtener_codigo(&$error)
+function obtener_codigo_insertar(&$error)
 {
     return filter_input(INPUT_POST, 'codigo', FILTER_CALLBACK, [
         'options' => function ($x) use (&$error) {
@@ -53,6 +53,43 @@ function obtener_codigo(&$error)
                                          FROM departamentos
                                         WHERE codigo = :codigo");
                 $sent->execute([':codigo' => $x]);
+                $cuantos = $sent->fetchColumn();
+                if ($cuantos !== 0) {
+                    insertar_error('codigo', 'El código ya existe', $error);
+                }
+            }
+
+            return $x;
+        }
+    ]);
+}
+
+function obtener_codigo_modificar($id, &$error)
+{
+    return filter_input(INPUT_POST, 'codigo', FILTER_CALLBACK, [
+        'options' => function ($x) use ($id, &$error) {
+            $long = mb_strlen($x);
+            if ($long < 1 || $long > 2) {
+                insertar_error(
+                    'codigo',
+                    'La longitud del código es incorrecta',
+                    $error
+                );
+            }
+            if (!ctype_digit($x)) {
+                insertar_error(
+                    'codigo',
+                    'Los caracteres del código no son válidos',
+                    $error
+                );
+            }
+            if (empty($error['codigo'])) {
+                $pdo = conectar();
+                $sent = $pdo->prepare("SELECT COUNT(*)
+                                         FROM departamentos
+                                        WHERE codigo = :codigo
+                                          AND id != :id");
+                $sent->execute([':codigo' => $x, ':id' => $id]);
                 $cuantos = $sent->fetchColumn();
                 if ($cuantos !== 0) {
                     insertar_error('codigo', 'El código ya existe', $error);
