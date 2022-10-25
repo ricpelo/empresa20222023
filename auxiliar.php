@@ -28,6 +28,54 @@ function obtener_parametro($par, $array)
     return isset($array[$par]) ? trim($array[$par]) : null;
 }
 
+function validar_digitos($numero, $campo, &$error)
+{
+    if (!ctype_digit($numero)) {
+        insertar_error(
+            $campo,
+            'Los caracteres del campo no son válidos',
+            $error
+        );
+    }
+}
+
+function validar_rango_numerico($numero, $campo, $min, $max, &$error)
+{
+    if ($numero < $min || $numero > $max) {
+        insertar_error(
+            $campo,
+            'La longitud del campo es incorrecta',
+            $error
+        );
+    }
+}
+
+function validar_existe($tabla, $columna, $valor, $campo, &$error)
+{
+    $pdo = conectar();
+    $sent = $pdo->prepare("SELECT COUNT(*)
+                             FROM $tabla
+                            WHERE $columna = :$columna");
+    $sent->execute([":$columna" => $valor]);
+    $cuantos = $sent->fetchColumn();
+    if ($cuantos !== 0) {
+        insertar_error($campo, 'La fila ya existe', $error);
+    }
+}
+
+function validar_longitud($cadena, $campo, $min, $max, &$error)
+{
+    $long = mb_strlen($cadena);
+
+    if ($long < $min || $long > $max) {
+        insertar_error(
+            $campo,
+            'La longitud del campo es incorrecta',
+            $error
+        );
+    }
+}
+
 function obtener_codigo_insertar(&$error)
 {
     return filter_input(INPUT_POST, 'codigo', FILTER_CALLBACK, [

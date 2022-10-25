@@ -23,8 +23,14 @@
 
     try {
         $error = [];
-        $codigo = obtener_codigo_insertar($error);
-        $denominacion = obtener_denominacion($error);
+        $codigo = obtener_post('codigo');
+        $denominacion = obtener_post('denominacion');
+        comprobar_parametros($codigo, $denominacion);
+        validar_digitos($codigo, 'codigo', $error);
+        comprobar_errores($error);
+        validar_rango_numerico($codigo, 'codigo', 0, 99, $error);
+        validar_existe('departamentos', 'codigo', $codigo, 'codigo', $error);
+        validar_longitud($denominacion, 'denominacion', 1, 255, $error);
         comprobar_errores($error);
         insertar_departamento($codigo, $denominacion);
         return volver();
