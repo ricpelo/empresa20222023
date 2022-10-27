@@ -99,14 +99,14 @@
                 <?php foreach ($sent as $fila): ?>
                     <tr>
                         <td><?= $fila['numero'] ?></td>
-                        <td><?= $fila['nombre'] ?></td>
+                        <td><?= mb_substr($fila['nombre'], 0, 30) ?></td>
                         <td><?= $nf->format($fila['salario']) ?></td>
                         <td><?= DateTime::createFromFormat(
                             FMT_FECHA,
                             $fila['fecha_nac'],
                             new DateTimeZone('Europe/Madrid')
                         )->format('d-m-Y') ?></td>
-                        <td><?= $fila['denominacion'] ?></td>
+                        <td><?= mb_substr($fila['denominacion'], 0, 30) ?></td>
                         <td><a href="confirmar_borrado.php?id=<?= $fila['id'] ?>">Borrar</a></td>
                         <td><a href="modificar.php?id=<?= $fila['id'] ?>">Modificar</a></td>
                     </tr>
