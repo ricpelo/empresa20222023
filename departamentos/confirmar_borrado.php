@@ -15,6 +15,8 @@
     if (!isset($id)) {
         return volver();
     }
+
+    cabecera();
     ?>
     <p>¿Está seguro de que desea borrar ese departamento?</p>
     <form action="borrar.php" method="post">

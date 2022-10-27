@@ -13,6 +13,8 @@
     $desde_codigo = obtener_get('desde_codigo');
     $hasta_codigo = obtener_get('hasta_codigo');
     $denominacion = obtener_get('denominacion');
+
+    cabecera();
     ?>
     <div>
         <form action="" method="get">

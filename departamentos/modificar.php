@@ -53,6 +53,8 @@
         }
         extract($fila);
     }
+
+    cabecera();
     ?>
     <div>
         <form action="" method="post">

@@ -118,3 +118,11 @@ function css_campo_error($campo, $error)
 {
     return isset($error[$campo]) ? 'class="campo-error"' : '';
 }
+
+function cabecera()
+{ ?>
+    <nav style="margin: 4px; padding: 4px; text-align: right; border: 1px solid;">
+        <a href="/empleados/">Empleados</a>
+        <a href="/departamentos/">Departamentos</a>
+    </nav><?php
+}
