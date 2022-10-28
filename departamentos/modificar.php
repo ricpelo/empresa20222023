@@ -20,7 +20,7 @@
         $error = [];
         $codigo = obtener_post('codigo');
         $denominacion = obtener_post('denominacion');
-        comprobar_parametros($codigo, $denominacion);
+        comprobar_params($codigo, $denominacion);
         // Validar
         validar_digitos($codigo, 'codigo', $error);
         comprobar_errores($error);
