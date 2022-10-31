@@ -23,19 +23,19 @@
                 <p>
                     <label>
                         Desde código:
-                        <input type="text" name="desde_codigo" size="8" value="<?= $desde_codigo ?>">
+                        <input type="text" name="desde_codigo" size="8" value="<?= hh($desde_codigo) ?>">
                     </label>
                 </p>
                 <p>
                     <label>
                         Hasta código:
-                        <input type="text" name="hasta_codigo" size="8" value="<?= $hasta_codigo ?>">
+                        <input type="text" name="hasta_codigo" size="8" value="<?= hh($hasta_codigo) ?>">
                     </label>
                 </p>
                 <p>
                     <label>
                         Denominación:
-                        <input type="text" name="denominacion" value="<?= $denominacion ?>">
+                        <input type="text" name="denominacion" value="<?= hh($denominacion) ?>">
                     </label>
                 </p>
                 <button type="submit">Buscar</button>
@@ -79,15 +79,15 @@
             <tbody>
                 <?php foreach ($sent as $fila): ?>
                     <tr>
-                        <td><?= $fila['codigo'] ?></td>
-                        <td><?= $fila['denominacion'] ?></td>
-                        <td><a href="confirmar_borrado.php?id=<?= $fila['id'] ?>">Borrar</a></td>
-                        <td><a href="modificar.php?id=<?= $fila['id'] ?>">Modificar</a></td>
+                        <td><?= hh($fila['codigo']) ?></td>
+                        <td><?= hh($fila['denominacion']) ?></td>
+                        <td><a href="confirmar_borrado.php?id=<?= hh($fila['id']) ?>">Borrar</a></td>
+                        <td><a href="modificar.php?id=<?= hh($fila['id']) ?>">Modificar</a></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
         </table>
-        <p>Número total de filas: <?= $total ?></p>
+        <p>Número total de filas: <?= hh($total) ?></p>
         <a href="insertar.php">Insertar un nuevo departamento</a>
     </div>
 </body>

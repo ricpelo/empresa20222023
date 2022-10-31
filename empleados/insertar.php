@@ -70,8 +70,8 @@
                 <label <?= css_campo_error('nombre', $error) ?>>
                     Nombre:
                     <input type="text" name="nombre"
-                    value="<?= $nombre ?>"
-                    <?= css_campo_error('nombre', $error) ?>
+                        value="<?= $nombre ?>"
+                        <?= css_campo_error('nombre', $error) ?>
                     >
                 </label>
                 <?php mostrar_errores('nombre', $error) ?>
@@ -80,8 +80,8 @@
                 <label <?= css_campo_error('salario', $error) ?>>
                     Salario:
                     <input type="text" name="salario"
-                    value="<?= $salario ?>"
-                    <?= css_campo_error('salario', $error) ?>
+                        value="<?= $salario ?>"
+                        <?= css_campo_error('salario', $error) ?>
                     >
                 </label>
                 <?php mostrar_errores('salario', $error) ?>

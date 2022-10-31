@@ -178,3 +178,8 @@ function selected($a, $b)
 {
     return $a == $b ? 'selected' : '';
 }
+
+function hh($x)
+{
+    return htmlspecialchars($x ?? '', ENT_QUOTES | ENT_SUBSTITUTE);
+}
