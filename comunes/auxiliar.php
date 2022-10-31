@@ -41,8 +41,8 @@ function obtener_parametros(array $par, array $array): array
 
 function comprobar_parametros(array $par): bool
 {
-    foreach ($par as $p) {
-        if (!isset($par[$p])) {
+    foreach ($par as $v) {
+        if ($v === null) {
             return false;
         }
     }
@@ -84,6 +84,17 @@ function validar_rango_numerico($numero, $campo, $min, $max, &$error)
             $error
         );
     }
+}
+
+function comprobar_existe($tabla, $columna, $valor)
+{
+    $pdo = conectar();
+    $sent = $pdo->prepare("SELECT COUNT(*)
+                             FROM $tabla
+                            WHERE $columna = :$columna");
+    $sent->execute([":$columna" => $valor]);
+    $cuantos = $sent->fetchColumn();
+    return $cuantos;
 }
 
 function validar_existe($tabla, $columna, $valor, $campo, &$error): bool
@@ -161,4 +172,9 @@ function cabecera()
         <a href="/empleados/">Empleados</a>
         <a href="/departamentos/">Departamentos</a>
     </nav><?php
+}
+
+function selected($a, $b)
+{
+    return $a == $b ? 'selected' : '';
 }

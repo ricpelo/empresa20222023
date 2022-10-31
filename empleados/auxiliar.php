@@ -34,7 +34,7 @@ function validar_salario($salario, &$error)
 function validar_fecha_nac($fecha_nac, &$error)
 {
     $fecha = [];
-    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $fecha_nac, $fecha) === 0) {
+    if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $fecha_nac, $fecha) === 0) {
         insertar_error(
             'fecha_nac',
             'El campo no tiene un formato válido',
@@ -60,13 +60,9 @@ function validar_departamento_id($departamento_id, &$error)
         return;
     }
 
-    validar_existe(
-        'departamentos',
-        'id',
-        $departamento_id,
-        'departamento_id',
-        $error
-    );
+    if (!comprobar_existe('departamentos', 'id', $departamento_id)) {
+        insertar_error('departamento_id', 'La fila no existe', $error);
+    }
 }
 
 function validar_formato_salario($numero, &$error)

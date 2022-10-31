@@ -37,7 +37,7 @@
 
     if (comprobar_parametros($par)) {
         validar_numero($numero, $error);
-        validar_nombre($denominacion, $error);
+        validar_nombre($nombre, $error);
         validar_salario($salario, $error);
         validar_fecha_nac($fecha_nac, $error);
         validar_departamento_id($departamento_id, $error);
@@ -101,12 +101,15 @@
                     Departamento:
                     <select name="departamento_id">
                         <?php foreach ($departamentos as $departamento): ?>
-                            <option value="<?= $departamento['id'] ?>">
+                            <option
+                                value="<?= $departamento['id'] ?>"
+                                <?= selected($departamento['id'],
+                                             $departamento_id) ?>
+                            >
                                 <?= $departamento['denominacion'] ?>
                             </option>
                         <?php endforeach ?>
                     </select>
-                    <?= css_campo_error('departamento_id', $error) ?>
                 </label>
                 <?php mostrar_errores('departamento_id', $error) ?>
             </div>

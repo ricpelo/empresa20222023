@@ -101,7 +101,7 @@
                     <tr>
                         <td><?= $fila['numero'] ?></td>
                         <td><?= mb_substr($fila['nombre'], 0, 30) ?></td>
-                        <td><?= $nf->format($fila['salario']) ?></td>
+                        <td align="right"><?= $nf->format($fila['salario']) ?></td>
                         <td><?= DateTime::createFromFormat(
                             FMT_FECHA,
                             $fila['fecha_nac'],
