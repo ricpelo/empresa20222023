@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,7 +14,7 @@
     $id = obtener_get('id');
 
     if (!isset($id)) {
-        return volver();
+        return volver_principal();
     }
 
     cabecera();

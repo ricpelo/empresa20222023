@@ -1,11 +1,12 @@
 <?php
+session_start();
 
 require 'auxiliar.php';
 
 $id = obtener_post('id');
 
 if (!isset($id)) {
-    return volver();
+    return volver_principal();
 }
 
 // TODO: Validar id
@@ -13,4 +14,4 @@ if (!isset($id)) {
 $pdo = conectar();
 $sent = $pdo->prepare("DELETE FROM empleados WHERE id = :id");
 $sent->execute([':id' => $id]);
-volver();
+volver_principal();

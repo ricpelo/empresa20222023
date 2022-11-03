@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,7 +34,7 @@
         validar_longitud($denominacion, 'denominacion', 1, 255, $error);
         comprobar_errores($error);
         insertar_departamento($codigo, $denominacion);
-        return volver();
+        return volver_principal();
     } catch (Exception $e) {
         // Vacío
     }

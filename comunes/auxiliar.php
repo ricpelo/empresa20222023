@@ -8,9 +8,19 @@ function conectar()
 /**
  * Vuelve al index.php
  */
-function volver()
+function volver_principal()
 {
-    header("Location: index.php");
+    header("Location: /index.php");
+}
+
+function volver_empleados()
+{
+    header("Location: /empleados/");
+}
+
+function volver_departamentos()
+{
+    header("Location: /departamentos/");
 }
 
 function obtener_get($par)
@@ -182,4 +192,17 @@ function selected($a, $b)
 function hh($x)
 {
     return htmlspecialchars($x ?? '', ENT_QUOTES | ENT_SUBSTITUTE);
+}
+
+function pie()
+{
+    if (isset($_COOKIE['acepta_cookies'])) {
+        return;
+    } ?>
+    <form action="/comunes/cookies.php" method="get" style="border: 1px solid; margin-top: 1em; padding: 0.5ex 1.5ex">
+        <p align="right">
+            Este sitio usa cookies.
+            <button type="submit">Aceptar</button>
+        </p>
+    </form><?php
 }
