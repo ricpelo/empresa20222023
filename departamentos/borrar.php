@@ -5,8 +5,12 @@ require 'auxiliar.php';
 
 $id = obtener_post('id');
 
+if (!comprobar_csrf()) {
+    return volver_departamentos();
+}
+
 if (!isset($id)) {
-    return volver_principal();
+    return volver_departamentos();
 }
 
 // TODO: Validar id

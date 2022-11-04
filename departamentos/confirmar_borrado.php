@@ -22,6 +22,7 @@
     <p>¿Está seguro de que desea borrar ese departamento?</p>
     <form action="borrar.php" method="post">
         <input type="hidden" name="id" value="<?= $id ?>">
+        <?php token_csrf() ?>
         <button type="submit">Sí</button>
         <a href="index.php">No</a>
     </form>

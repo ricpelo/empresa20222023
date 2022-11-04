@@ -206,3 +206,26 @@ function pie()
         </p>
     </form><?php
 }
+
+function token_csrf()
+{
+    $token_csrf = sesion_csrf();
+    ?>
+    <input type="hidden"
+           name="token_csrf" value="<?= $token_csrf ?>"><?php
+}
+
+function sesion_csrf()
+{
+    // TODO: Expiración del token de sesión
+    if (!isset($_SESSION['token_csrf'])) {
+        $_SESSION['token_csrf'] = bin2hex(openssl_random_pseudo_bytes(32));
+        // $_SESSION['token_csrf_time'] = time();
+    } // else if (time() - $_SESSION['token_csrf_time'] > )
+    return $_SESSION['token_csrf'];
+}
+
+function comprobar_csrf(): bool
+{
+    return obtener_post('token_csrf') === $_SESSION['token_csrf'];
+}

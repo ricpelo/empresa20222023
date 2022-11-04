@@ -43,6 +43,7 @@
     ?>
     <div>
         <form action="" method="post">
+            <?php token_csrf() ?>
             <div>
                 <label <?= css_campo_error('codigo', $error) ?>>
                     Código:
